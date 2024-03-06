@@ -115,29 +115,6 @@ class Biblioteca {
         }
     }
 
-    multa(usuario: Usuario){
-        let prazoEntrega
-    }
-
-
-    // calcularDiasAtraso(usuario: Usuario, diasAtrasoTotal: number): number {
-    //     const prazoDevolucaoPadraoEmDias = 14; 
-    //     diasAtrasoTotal
-    
-    //     // Percorrendo o histórico de empréstimos do usuário
-    // for (const livro of usuario.historicoEmprestimos) {
-            
-    // const dataAtual = new Date();
-    //     const dataDevolucaoEsperada = new Date(dataAtual);
-    //     dataDevolucaoEsperada.setDate(dataDevolucaoEsperada.getDate() + prazoDevolucaoPadraoEmDias);
-    //     const diffTime = dataAtual.getTime() - dataDevolucaoEsperada.getTime();
-    //     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    // if (diffDays > 0) {
-    //     diasAtrasoTotal += diffDays; 
-    // }
-    // }
-    //     return diasAtrasoTotal; 
-    // }
 }
 
 
