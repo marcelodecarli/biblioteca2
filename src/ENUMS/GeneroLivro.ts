@@ -1,0 +1,8 @@
+//NESSE ENUM ESTAMOS CRIANDO OS GÊNEROS DOS LIVROS
+
+export enum GeneroLivro {
+    ROMANCE = 'ROMANCE',
+    FICCAO = 'FICÇÃO CIENTÍFICA',
+    FANTASIA = 'FANTASIA'
+}
+
