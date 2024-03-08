@@ -13,7 +13,7 @@ export class Usuario {
     status: StatusUsuario
     historicoEmprestimo: Livro[]
 
-    constructor(nomeUsuario: string, idUsuario: number,contato: number,) {
+    constructor(nomeUsuario: string, idUsuario: number,contato: number) {
 
         this.nomeUsuario = nomeUsuario
         this.idUsuario = idUsuario
