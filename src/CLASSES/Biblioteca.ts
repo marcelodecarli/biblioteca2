@@ -30,16 +30,8 @@ class Biblioteca {
     addDisponiveis(livroTal: Livro): void {
         this.livros.push(livroTal)
     }
-    
 
-    //Nessa função consultamos os livros disponíveis na biblioteca
-    // consultaDisponiveis(): void {
-    //     let livro: Livro
-    //     if (livro.statusLivro === StatusLivro.DISPONIVEL) {
-    //         console.log(this.livros)
-    //     }
-    // }
-    
+
     //Nessa função consultamos os livros disponíveis na biblioteca
     consultaDisponiveis(): Livro[] {
         return this.livros.filter(livro => livro.statusLivro === StatusLivro.DISPONIVEL);
@@ -64,69 +56,103 @@ class Biblioteca {
     }
 
 
-    emprestarLivro(livro: Livro, usuario: Usuario): boolean {
-        const livroEncontrado = this.livros.find(l => l.nomeLivro === livro.nomeLivro);
-        const userNome = this.usuarios.find(u => u.nomeUsuario === usuario.nomeUsuario)
+    emprestarLivro(livro: string, usuario: string): boolean {
+        const livroEncontrado = this.livros.find(l => l.nomeLivro === livro);
+        const userNome = this.usuarios.find(u => u.nomeUsuario === usuario);
 
-        if (livroEncontrado && livroEncontrado.statusLivro === StatusLivro.DISPONIVEL && userNome && userNome.nomeUsuario === usuario.nomeUsuario) {
+
+        console.log('aqui é o livro' + livroEncontrado.nomeLivro)
+
+        if (livroEncontrado && livroEncontrado.statusLivro === StatusLivro.DISPONIVEL && userNome) {
             livroEncontrado.statusLivro = StatusLivro.EMPRESTADO;
-            usuario.historicoEmprestimo.push(livroEncontrado);
-            console.log(`O livro "${livroEncontrado.nomeLivro}" foi emprestado para o usuário "${usuario.nomeUsuario}".`);
+            userNome.historicoEmprestimo.push(livroEncontrado);
+            console.log(`O livro "${livroEncontrado.nomeLivro}" foi emprestado para o usuário "${usuario}".`);
             return true;
         }
-    
+
         return false;
     }
-    
-    //consulta de histórico
-    historicoEmprestimo(idUser: Usuario): void {
-
-        //criando a variável para armazenar o histórico pesquisado a partir do id do usuário
-
-        let historicoIdUser = idUser.historicoEmprestimo
-        //Aqui apresantamos o resultado
-        console.log(`Histórico de emprestimo do ${idUser.nomeUsuario}:\n`)
-        console.log(historicoIdUser);
-    }
 
 
-    devolucao(livro: Livro, usuario: Usuario): void {
-        const index = usuario.historicoEmprestimo.indexOf(livro);
-        if (index !== -1) {
-            livro.statusLivro = StatusLivro.DISPONIVEL;
-            usuario.historicoEmprestimo.splice(index, 1);
-            console.log(`O livro:${livro.nomeLivro} foi devolvido pelo Usuario:${usuario.nomeUsuario}`)
-        }
-    }
-    
-    reservar(livro: Livro, usuario: Usuario) {
-        if (livro.statusLivro === StatusLivro.DISPONIVEL) {
-            livro.statusLivro = StatusLivro.RESERVADO;
-            console.log(`O livro ${livro.nomeLivro} está reservado para o ${usuario.nomeUsuario}`)
+    historicoEmprestimo(idUser: string): boolean {
+        // Criando a variável para armazenar o histórico pesquisado a partir do id do usuário
+        const historico = this.usuarios.find(u => u.historicoEmprestimo.length > 0);
+        let historicoIdUser = historico.historicoEmprestimo;
 
+        // Verificando se o histórico está vazio
+        if (historicoIdUser.length === 0) {
+            console.log(`O usuário ${historico.nomeUsuario} não possui histórico de empréstimos.`);
+            return false
         } else {
-            console.log(`Livro indisponível para empréstimo. O status dele é ${livro.statusLivro}`)
+            console.log(`Histórico de empréstimo do ${historico.nomeUsuario}\n`);
+            historicoIdUser.forEach((livro, index) => {
+                console.log(`Empréstimo ${index + 1}:`);
+                console.log(`Título do livro: ${livro.nomeLivro}`);
+                console.log(`Status do livro: ${livro.statusLivro}`);
+                console.log(`Autor do livro: ${livro.autor}`);
+                console.log("\n");
+                return true
+            });
         }
     }
-    
+
+
+    devolucao(livro: string, usuario: string): boolean {
+        const livroEncontrado = this.livros.find(l => l.nomeLivro === livro);
+        const userNome = this.usuarios.find(u => u.nomeUsuario === usuario);
+
+        if (livroEncontrado && livroEncontrado.statusLivro === StatusLivro.EMPRESTADO ||
+            livroEncontrado && livroEncontrado.statusLivro === StatusLivro.ATRASADO ||
+            livroEncontrado && livroEncontrado.statusLivro === StatusLivro.RESERVADO) {
+            livroEncontrado.statusLivro = StatusLivro.DISPONIVEL;
+            console.log(`O livro "${livroEncontrado.nomeLivro}" foi DEVOLVIDO para o usuário "${usuario}".`);
+            return true;
+        }
+
+        return false;
+    }
+    reservar(livro: string, usuario: string): boolean {
+        const livroEncontrado = this.livros.find(l => l.nomeLivro === livro);
+        const userNome = this.usuarios.find(u => u.nomeUsuario === usuario);
+
+
+        if (livroEncontrado && livroEncontrado.statusLivro === StatusLivro.DISPONIVEL) {
+            livroEncontrado.statusLivro = StatusLivro.RESERVADO;
+            console.log(`O livro "${livroEncontrado.nomeLivro}" foi reservado para o usuário "${usuario}".`);
+            return true;
+        }
+
+        return false;
+    }
+
+    addLivroAtrasado(livro: string, usuario: string): boolean {
+        const livroEncontrado = this.livros.find(l => l.nomeLivro === livro);
+        const userNome = this.usuarios.find(u => u.nomeUsuario === usuario);
+
+
+        if (livroEncontrado && livroEncontrado.statusLivro === StatusLivro.EMPRESTADO) {
+            livroEncontrado.statusLivro = StatusLivro.ATRASADO;
+            console.log(`O livro "${livroEncontrado.nomeLivro}" está atrasado para o usuário "${usuario}".`);
+            return true;
+        }
+
+        return false;
+    }
+
+
     multa(diasTrasados: number) {
         const valorMulta: number = 10
         let valorTotal: number = diasTrasados * valorMulta
         console.log(`O total de dias atrasado foi de: ${diasTrasados}, o valor diário de multa é de R$${valorMulta} e o valor total da multa é de R$${valorTotal}.`)
 
     }
-    
-    listaGenero(genero: string): Livro[] {
 
-        return this.livros.filter(livro => {
-            for (const livroGenero of livro.generoLivro) {
-                if (livroGenero === genero && livro.statusLivro === StatusLivro.DISPONIVEL) {
-                    return true;
-                }
-            }
-            return false;
-        });
+    listaGenero(genero: string): Livro[] {
+        if (genero === GeneroLivro.FANTASIA || genero === GeneroLivro.FICCAO || genero === GeneroLivro.ROMANCE) {
+            return this.livros.filter((livro) => livro.generoLivro.includes(genero));
+        }
     }
+
 
 }
 

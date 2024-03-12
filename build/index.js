@@ -25,7 +25,8 @@ function menu() {
     console.log('11: Cadastrar livro: ');
     console.log('12: Emprestimo de Livro');
     console.log('13: Devolução de Livro');
-    console.log('14: Sair do sistema');
+    console.log('14: Adicionar livro a lista de atrasados');
+    console.log('15: Sair do sistema');
     function encerrar() {
         process.exit(0);
     }
@@ -93,13 +94,21 @@ function menu() {
             console.clear();
             const tituloLivroEmpresta = rl.question('Digite o título do livro: '.toUpperCase());
             const nomeUserEmpresta = rl.question('Digite o nome completo do usuário: '.toUpperCase());
-            return newBiblioteca.emprestarLivro(tituloLivroEmpresta, nomeUserEmpresta);
+            newBiblioteca.emprestarLivro(tituloLivroEmpresta, nomeUserEmpresta);
+            break;
         case 13:
             console.clear();
             const tituloLivroDevolucao = rl.question('Digite o título do livro: '.toUpperCase());
             const nomeUserDevolucao = rl.question('Digite o nome completo do usuário: '.toUpperCase());
             newBiblioteca.devolucao(tituloLivroDevolucao, nomeUserDevolucao);
+            break;
         case 14:
+            console.clear();
+            const tituloLivroatrasado = rl.question('Digite o título do livro: '.toUpperCase());
+            const nomeUserAtrasado = rl.question('Digite o nome completo do usuário: '.toUpperCase());
+            newBiblioteca.addLivroAtrasado(tituloLivroatrasado, nomeUserAtrasado);
+            break;
+        case 15:
             encerrar();
             break;
         default:
