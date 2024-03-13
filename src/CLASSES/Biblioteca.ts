@@ -84,8 +84,8 @@ class Biblioteca {
             console.log(`O usuário ${historico.nomeUsuario} não possui histórico de empréstimos.`);
             return false
         } else {
-            console.log(`Histórico de empréstimo do ${historico.nomeUsuario}\n`);
             historicoIdUser.forEach((livro, index) => {
+                console.log(`Histórico de empréstimo do ${historico.nomeUsuario}\n`);
                 console.log(`Empréstimo ${index + 1}:`);
                 console.log(`Título do livro: ${livro.nomeLivro}`);
                 console.log(`Status do livro: ${livro.statusLivro}`);
